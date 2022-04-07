@@ -3,11 +3,22 @@ from django.shortcuts import render, redirect
 from .forms import SignUpForm
 from .models import UserProfile
 from django.contrib import messages
+import requests
 # Create your views here.
 
 
 def home(request):
-    return render(request, 'monitor/home.html')
+    data = []
+    r = requests.get('https://api.thingspeak.com/channels/1312691/feeds.json?api_key=TINNGV928QN3S2A7&results=1', params=request.GET)   
+    if r.status_code == 200:
+        data = r.json()
+        print(data)
+    temp = data['feeds'][0]['field1'] 
+    mositure =  data['feeds'][0]['field2']
+    at =  data['feeds'][0]['field3']
+    ht= data['feeds'][0]['field4']
+        
+    return render(request, 'monitor/home.html', {'temp': temp, 'mositure': mositure, 'at':  at, 'ht':  ht, 'activedashboard': 'active'})
 
 
 def register(request):
