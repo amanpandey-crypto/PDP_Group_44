@@ -17,8 +17,12 @@ def home(request):
     mositure =  data['feeds'][0]['field2']
     at =  data['feeds'][0]['field3']
     ht= data['feeds'][0]['field4']
-        
-    return render(request, 'monitor/home.html', {'temp': temp, 'mositure': mositure, 'at':  at, 'ht':  ht, 'activedashboard': 'active'})
+    mydict={
+        'temp': temp, 'mositure': mositure, 'at':  at, 'ht':  ht
+    }
+     
+    print(mydict) 
+    return render(request, 'monitor/home.html', context=mydict )
 
 
 def register(request):
