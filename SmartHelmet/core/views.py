@@ -1,28 +1,30 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from .forms import SignUpForm
-from .models import UserProfile
+from .models import Data, UserProfile
 from django.contrib import messages
 import requests
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponseNotAllowed, JsonResponse
 # Create your views here.
 
 
 def home(request):
     data = []
-    r = requests.get('https://api.thingspeak.com/channels/1312691/feeds.json?api_key=TINNGV928QN3S2A7&results=1', params=request.GET)   
+    r = requests.get('https://api.thingspeak.com/channels/1713185/fields/1.json?results=', params=request.GET)   
     if r.status_code == 200:
         data = r.json()
         print(data)
-    temp = data['feeds'][0]['field1'] 
-    mositure =  data['feeds'][0]['field2']
-    at =  data['feeds'][0]['field3']
-    ht= data['feeds'][0]['field4']
-    mydict={
-        'temp': temp, 'mositure': mositure, 'at':  at, 'ht':  ht
-    }
-     
-    print(mydict) 
-    return render(request, 'monitor/home.html', context=mydict )
+        sensor_obj = Data(
+            pulse=data['feeds'][0]['field1'],
+            pressure=data['feeds'][1]['field1'],
+            altitude=data['feeds'][2]['field1'],
+            temp=data['feeds'][3]['field1'],
+        )
+        sensor_obj.save()
+        print(sensor_obj)
+        sensor = Data.objects.all()
+    return render(request, 'monitor/home.html', { "sensor": sensor} )
 
 
 def register(request):
@@ -62,3 +64,20 @@ def logoutUser(request):
     logout(request)
     messages.success(request, 'You have been successfully logged out')
     return redirect('login')
+
+
+# def receive_sensor_data(request):
+#     data = []
+#     r = requests.get('https://api.thingspeak.com/channels/1713185/fields/1.json?results=1', params=request.GET)   
+#     if r.status_code == 200:
+#         data = r.json()
+#         sensor_obj = Data(
+#             pulse=str(data["field1"]),
+#             pressure=str(data["field1"]),
+#             altitude=str(data["field1"]),
+#             temp=str(data["field1"]),
+#         )
+#         print(sensor_obj)
+#         sensor_obj.save()
+
+#     return HttpResponseNotAllowed()

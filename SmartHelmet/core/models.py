@@ -8,3 +8,10 @@ class UserProfile(models.Model):
     user_image=models.URLField(null=True)
     def __str__(self):
         return self.user.username
+
+class Data(models.Model):
+    pulse = models.IntegerField(default=0)
+    pressure = models.IntegerField(default=0)
+    altitude = models.IntegerField(default=0)
+    temp = models.IntegerField(default=0)
+    
