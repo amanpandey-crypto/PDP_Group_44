@@ -12,6 +12,8 @@ class UserProfile(models.Model):
 class Data(models.Model):
     pulse = models.IntegerField(default=0)
     pressure = models.IntegerField(default=0)
-    altitude = models.IntegerField(default=0)
     temp = models.IntegerField(default=0)
-    
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-timestamp']

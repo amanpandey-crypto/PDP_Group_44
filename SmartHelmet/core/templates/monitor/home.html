@@ -35,15 +35,14 @@
        <div class="text-center">
               <!-- <button type="submit" class="btn btn-primary"><a href="#contact"><span style="color:white;">Contact Us</span></a></button> -->
               {%if request.user.is_authenticated %}
-              <table class="table table-dark table-striped">
+              <table class="table table-dark table-striped" style="width:auto; align-items: center; margin-left: 23rem;">
                      <thead>
                        <tr>
                          <th scope="col">#</th>
-                         <th scope="col">Temperature</th>
-                         <th scope="col">IR</th>
-                         <th scope="col">Humidity</th>
-                         <th scope="col">Light</th>
-                         <!-- <th scope="col">Timestamp</th> -->
+                         <th scope="col">Pulse rate (Bpm)</th>
+                         <th scope="col">Pressure (hPa)</th>
+                         <th scope="col">Temperature (degC)</th>
+                         <th scope="col">Timestamp</th>
                        </tr>
                      </thead>
                      <tbody>
@@ -52,9 +51,8 @@
                          <th scope="row">{{ forloop.counter }}</th>
                          <td>{{each.pulse}}</td>
                          <td>{{each.pressure}}</td>
-                         <td>{{each.altitude}}</td>
                          <td>{{each.temp}}</td>
-                         <!-- <td>{{each.timestamp|date:'d-m-Y H:i'}}</td> -->
+                         <td>{{each.timestamp|date:'d-m-Y H:i'}}</td>
                        </tr>
                        {% empty %}
                        <p class="lead">No Data Yet!</p>
@@ -66,10 +64,6 @@
               {% endif %}
       </div>
 </div>
-
-
-<br/><br/>
-<br/><br/>
 
 <br/><br/>
 

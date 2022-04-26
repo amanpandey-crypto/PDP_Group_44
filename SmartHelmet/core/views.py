@@ -11,15 +11,15 @@ from django.http import HttpResponseNotAllowed, JsonResponse
 
 def home(request):
     data = []
-    r = requests.get('https://api.thingspeak.com/channels/1713185/fields/1.json?results=', params=request.GET)   
+    r = requests.get('https://api.thingspeak.com/channels/1713185/feeds.json?results=2', params=request.GET)   
     if r.status_code == 200:
         data = r.json()
         print(data)
         sensor_obj = Data(
             pulse=data['feeds'][0]['field1'],
-            pressure=data['feeds'][1]['field1'],
-            altitude=data['feeds'][2]['field1'],
-            temp=data['feeds'][3]['field1'],
+            temp=data['feeds'][0]['field2'],
+            pressure=data['feeds'][0]['field3'],
+            timestamp=data['feeds'][0]['created_at'],
         )
         sensor_obj.save()
         print(sensor_obj)
